@@ -1,20 +1,50 @@
 #include "user.h"
 
+void list_file(LOGIN* list[], int count){
+    #ifdef DEBUG_MODE
+     printf("DEBUG>> datafile opened! \\n");
+
+    #endif
+    printf("User list (id/password)\n");
+    for(int i=0; i<count; i++)
+	printf("[%d] %s / %s\n",i+1,list[i]->id,list[i]->password);    
+}
+
 int load_file(LOGIN* list[], char* filename){
   int count=0;
   FILE *datafile = fopen(filename, "r");
+  int yn;
+
+
+  if(datafile == NULL){
+      printf("%s file not exist! make anyway? (Yes 1, No 2) >> ",filename);
+      scanf("%d",&yn);
+      if(yn == 1)
+	datafile = fopen(filename,"w");
+    printf("Welcome!!\n");
+  }
+
+  else{
   while(!feof(datafile)){
     list[count]=(LOGIN*)malloc(sizeof(LOGIN));
     fscanf(datafile,"%s %s",list[count]->id,list[count]->password);
     count++;
   }
+  printf("Welcome!! ");
   printf("%d records read!\n",count);\
   fclose(datafile);
   return count;
 }
+fclose(datafile);
+
+}
 
 void join(LOGIN* list[], int count){
-  char id[20], pass[20];
+    #ifdef DEBUG_MODE
+     printf("DEBUG>> datafile opened! \\n");
+
+    #endif
+    char id[20], pass[20];
   while(1){
     printf("Enter new user id >> ");
     scanf("%s", id);
@@ -37,9 +67,14 @@ void join(LOGIN* list[], int count){
       break;
     }
   }
+  
 }
 
 int login(LOGIN* list[], int count){
+    #ifdef DEBUG_MODE
+     printf("DEBUG>> datafile opened! \\n");
+
+    #endif
   char id[20], pass[20];
   printf("Enter user id >> ");
   scanf("%s", id);
@@ -70,11 +105,19 @@ int login(LOGIN* list[], int count){
 }
 
 void logout(int* is_login){
+    #ifdef DEBUG_MODE
+     printf("DEBUG>> datafile opened! \\n");
+
+    #endif
   *is_login = 0;
-  printf("Logout!!\n");
+  printf("Bye!!\n");
 }
 
 void save_file(LOGIN* list[], int count, char* filename){
+    #ifdef DEBUG_MODE
+     printf("DEBUG>> datafile opened! \\n");
+
+    #endif
   FILE *datafile = fopen(filename, "w");
   for(int i=0; i<count; i++){
     fprintf(datafile, "%s %s\n", list[i]->id, list[i]->password);
